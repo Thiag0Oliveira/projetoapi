@@ -5,7 +5,7 @@ RSpec.describe 'Users API', type: :request do
   let!(:user) {create(:user)}
   let(:user_id) {user.id}
 
-  before{ host! "api.projetoapi.dev"}
+  before{ host! "api.projetoapi.test"}
 
   describe "GET /users/:id" do
 
