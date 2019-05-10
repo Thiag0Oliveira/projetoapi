@@ -25,7 +25,7 @@ RSpec.describe 'Users API', type: :request do
     
     context 'when the user exists' do
       it 'returns the user' do
-        #json_body = JSON.parse(response.body)
+        json_body = JSON.parse(response.body)
         expect(json_body['id']).to eq(user_id)
       end
 
