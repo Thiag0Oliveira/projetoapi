@@ -10,4 +10,9 @@ module Authenticable
   end 
 
 
+  def user_logged_in?
+
+    current_user.present?
+
+  end
 end  
