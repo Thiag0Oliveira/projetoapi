@@ -7,7 +7,8 @@ RSpec.describe 'Users API', type: :request do
   let(:headers) do
     {
       'Accept' => 'application/vnd.projetoapi.v1',
-      'Content-Type'=> Mime[:json].to_s
+      'Content-Type'=> Mime[:json].to_s,
+      'Authorization' => user.auth_token
 
     }
   end 
@@ -25,7 +26,7 @@ RSpec.describe 'Users API', type: :request do
     
     context 'when the user exists' do
       it 'returns the user' do
-        #json_body = JSON.parse(response.body)
+        json_body = JSON.parse(response.body)
         expect(json_body['id']).to eq(user_id)
       end
 
