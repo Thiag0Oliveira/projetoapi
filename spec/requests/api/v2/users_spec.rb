@@ -20,14 +20,14 @@ RSpec.describe 'Users API', type: :request do
 
     before do
 
-      headers ={'Accept' => 'application/vnd.projetoapi.v1'}
+     # headers ={'Accept' => 'application/vnd.projetoapi.v1'}
       get "/users/#{user_id}",params:{},headers: headers
     end
     
     context 'when the user exists' do
       it 'returns the user' do
-        json_body = JSON.parse(response.body)
-        expect(json_body['id']).to eq(user_id)
+       # json_body = JSON.parse(response.body)
+        expect(json_body[:data][:id].to_i).to eq(user_id)
       end
 
       it 'returns status 200' do
@@ -64,7 +64,7 @@ RSpec.describe 'Users API', type: :request do
 
       it 'returns json data for the created user' do
         #json_body = JSON.parse(response.body,symbolize_names: true)
-        expect(json_body[:email]).to eq(user_params[:email])
+        expect(json_body[:data][:attributes][:email]).to eq(user_params[:email])
       end
     end
 
@@ -99,7 +99,7 @@ RSpec.describe 'Users API', type: :request do
 
       it 'returns the json data for the updated user' do
       #  json_body = JSON.parse(response.body,symbolize_names: true)
-        expect(json_body[:email]).to eq(user_params[:email])
+        expect(json_body[:data][:attributes][:email]).to eq(user_params[:email])
       end
     end
 
