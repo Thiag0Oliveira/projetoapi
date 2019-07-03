@@ -7,7 +7,8 @@ RSpec.describe User, type: :model do
   it{is_expected.to have_many(:tasks)}
   
   it{is_expected.to validate_presence_of(:email)}
-  it{is_expected.to validate_uniqueness_of(:email).case_insensitive}
+  # it{is_expected.to validate_uniqueness_of(:email).case_insensitive}
+  it{is_expected.to validate_uniqueness_of(:email).case_insensitive.scoped_to(:provider) }
   it{is_expected.to validate_confirmation_of(:password)}
   it{is_expected.to allow_value('contato.thg@hotmail.com').for(:email)}
   it{is_expected.to validate_uniqueness_of(:auth_token)}
