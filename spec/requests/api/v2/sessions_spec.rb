@@ -2,19 +2,24 @@ require 'rails_helper'
 
 RSpec.describe 'Sessions API', type: :request do
     before{ host! 'api.projetoapi.test'}
-    let(:user) {create(:user)}
+    let!(:user) {create(:user)}
+    let!(:auth_data) {user.create_new_auth_token}
     let(:headers) do
       {
         'Accept' => 'application/vnd.projetoapi.v2',
-        'Content-Type'=> Mime[:json].to_s
-        #'Authorization' => user.auth_token
+        'Content-Type'=> Mime[:json].to_s,
+        'access-token' => auth_data['access-token'],
+        'uid' => auth_data['uid'],
+        'client' => auth_data['client']
+  
       }
+  
     end 
 
-    describe 'POST /sessions' do
+    describe 'POST /auth/sign_in' do
         before do
           #  headers = { 'Accept' => 'application/vnd.projetoapi.v1' }
-          post '/sessions', params: { session: credentials }.to_json, headers: headers
+          post '/auth/sign_in', params: credentials.to_json, headers: headers
         end
 
         context 'when the credentials are correct' do
@@ -26,9 +31,12 @@ RSpec.describe 'Sessions API', type: :request do
 
           end  
 
-          it 'returns the json data for the user with auth token' do
-            user.reload
-            expect(json_body[:data][:attributes][:'auth-token']).to eq(user.auth_token)
+          it 'returns the authentication data in the headers' do
+            expect(response.headers).to have_key('access-token')
+            expect(response.headers).to have_key('uid')
+            expect(response.headers).to have_key('client')
+           # user.reload
+           # expect(json_body[:data][:attributes][:'auth-token']).to eq(user.auth_token)
           end  
         end  
   
@@ -54,21 +62,23 @@ RSpec.describe 'Sessions API', type: :request do
     
   
   
-    describe 'DELETE /sessions/:id' do
+    describe 'DELETE /auth/sign_out' do
       let(:auth_token) {user.auth_token}
 
       before do
-        delete "/sessions/#{auth_token}",params: {}, headers:headers
+        delete '/auth/sign_out',params: {}, headers:headers
 
       end
 
-      it 'returns status code 204' do
+      it 'returns status code 200' do
 
-        expect(response).to have_http_status(204)
+        expect(response).to have_http_status(200)
       end
 
       it 'changes the user auth token' do
-        expect(User.find_by(auth_token: auth_token)).to be_nil
+        user.reload #recarrega usuário em memória
+        
+        expect(user.valid_token?(auth_data['access-token'],auth_data['client'])).to eq(false)
       end
     end
 
