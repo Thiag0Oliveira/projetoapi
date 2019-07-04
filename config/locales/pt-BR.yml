@@ -1,0 +1,7 @@
+---
+pt-BR:
+   time:
+     formats:
+      datetime: "%d/%m/%y %H:%M"
+      
+   
