@@ -79,6 +79,7 @@ RSpec.describe 'Sessions API', type: :request do
         user.reload #recarrega usuário em memória
         
         expect(user.valid_token?(auth_data['access-token'],auth_data['client'])).to eq(false)
+        #expect (user).not_to be_valid_token(auth_data['access-token'],auth_data['client'])
       end
     end
 
