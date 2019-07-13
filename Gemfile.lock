@@ -208,7 +208,7 @@ DEPENDENCIES
   pg
   puma (~> 3.0)
   rack-cors
-  rails (~> 5.0.2)
+  rails (~> 5.0.6)
   rails-i18n (~> 5.1)
   ransack
   rspec-rails (~> 3.5)
